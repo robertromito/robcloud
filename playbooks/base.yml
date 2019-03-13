@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: all
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: "Install common packages"
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - htop
+      - tree
+      - git
