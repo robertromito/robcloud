@@ -19,3 +19,15 @@
       - curl
       - gnupg-agent
       - software-properties-common
+
+  - name: "Stay powered up when laptop stuff happens"
+    become: yes
+    lineinfile:
+      path: /etc/systemd/logind.conf
+      regexp: "{{ item }}="
+      line: "{{ item }}=ignore"
+    loop:
+      - HandleLidSwitch
+      - HandleLidSwitchExternalPower
+      - HandlePowerKey
+
