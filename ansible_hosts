@@ -3,9 +3,14 @@ ansible_ssh_private_key_file=~/.ssh/robcloud
 
 localhost ansible_connection=local
 
-[master]
-robcloud1
+[laptops]
+robcloud1.woz
+robcloud2.woz
+robcloud3.woz
 
-[nodes]
-robcloud2
-robcloud3
+[pis:vars]
+ansible_user=pi
+
+[pis]
+robcloud4.woz
+robcloud5.woz
