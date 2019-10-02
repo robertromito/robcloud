@@ -3,6 +3,9 @@ ansible_ssh_private_key_file=~/.ssh/robcloud
 
 localhost ansible_connection=local
 
+[laptops:vars]
+apt_architecture=amd64
+
 [laptops]
 robcloud1.woz
 robcloud2.woz
@@ -10,6 +13,7 @@ robcloud3.woz
 
 [pis:vars]
 ansible_user=pi
+apt_architecture=armhf
 
 [pis]
 robcloud4.woz
