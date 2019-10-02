@@ -20,6 +20,11 @@
       - gnupg-agent
       - software-properties-common
 
+- hosts: laptops
+  become: true
+  become_method: sudo
+
+  tasks:
   - name: "Stay powered up when laptop stuff happens"
     become: yes
     lineinfile:
@@ -30,4 +35,3 @@
       - HandleLidSwitch
       - HandleLidSwitchExternalPower
       - HandlePowerKey
-
