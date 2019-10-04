@@ -1,0 +1,87 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: all
+  become: true
+  become_method: sudo
+
+  vars:
+    prometheus_version: 2.12.0
+
+  tasks:
+  - name: Creating prometheus user group
+    group: name=prometheus state=present
+
+  - name: Creating prometheus user
+    user:
+      name: prometheus
+      group: prometheus
+      system: yes
+      shell: "/sbin/nologin"
+      comment: "prometheus nologin User"
+      createhome: false
+      state: present
+
+  - name: Install prometheus
+    unarchive:
+      src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}.tar.gz"
+      dest: /tmp/
+      remote_src: yes
+  
+  - name: Copy prometheus file to bin
+    copy:
+      src: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}/prometheus"
+      dest: "/usr/local/bin/prometheus"
+      owner: prometheus
+      group: prometheus
+      remote_src: yes
+      mode: 0755
+      
+  - name: Delete prometheus tmp folder
+    file:
+      path: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}"
+      state: absent     
+      
+  - name: Prometheus directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: 0755
+      owner: prometheus
+      group: prometheus
+    loop:
+    - /etc/prometheus
+    - /data/prometheus
+
+  - name: config file
+    template:
+      src: ../templates/prometheus.conf.j2
+      dest: /etc/prometheus/prometheus.conf
+
+  - name: Copy systemd init file
+    template:
+      src: ../templates/prometheus.init.service.j2
+      dest: /etc/systemd/system/prometheus.service
+    notify: systemd_reload
+
+  - name: Start prometheus service
+    service:
+      name: prometheus
+      state: started
+      enabled: yes
+
+  - name: Check if prometheus is accessible
+    uri:
+      url: http://localhost:9090/graph
+      method: GET
+      status_code: 200
+  
+  handlers:
+  - name: Restart the Prometheus service
+    service:
+      name: prometheus
+      state: restarted
+    listen: event_restart_prometheus
+
+  - name: Reload systemd
+    command: systemctl daemon-reload
+    listen: systemd_reload    

@@ -5,6 +5,7 @@ localhost ansible_connection=local
 
 [laptops:vars]
 apt_architecture=amd64
+linux_architecture=amd64
 
 [laptops]
 robcloud1.woz
@@ -14,6 +15,7 @@ robcloud3.woz
 [pis:vars]
 ansible_user=pi
 apt_architecture=armhf
+linux_architecture=armv7
 
 [pis]
 robcloud4.woz
