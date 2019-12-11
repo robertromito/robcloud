@@ -13,4 +13,4 @@
       mode: 0644
 
   - name: "Run the grafana stack"
-    shell: docker stack deploy -c grafana.docker-compose.yml grafana
+    shell: docker-compose -f grafana.docker-compose.yml up -d
