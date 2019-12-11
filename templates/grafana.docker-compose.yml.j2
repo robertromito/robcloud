@@ -1,0 +1,19 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_DEFAULT_INSTANCE_NAME=grafana.woz
+      - GF_SERVER_ROOT_URL=http://grafana.woz
+
+    volumes:
+      - grafana-data:/var/lib/grafana
+    deploy:
+      placement:
+        constraints:
+          - node.labels.grafana == true
+
+volumes:
+  grafana-data:

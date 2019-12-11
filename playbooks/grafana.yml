@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: robcloud1.woz
+
+  tasks:
+  - name: "Label grafana swarm node"
+    shell: docker node update --label-add grafana=true $(docker node ls -q -f name=robcloud1)
+
+  - name: "Upload docker compose file"
+    template:
+      src: ../templates/grafana.docker-compose.yml.j2
+      dest: ~/grafana.docker-compose.yml
+      mode: 0644
+
+  - name: "Run the grafana stack"
+    shell: docker-compose -f grafana.docker-compose.yml up -d
