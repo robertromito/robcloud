@@ -4,4 +4,12 @@
   become: true
   become_method: sudo
   roles:
+    - base
     - docker
+    - node_exporter
+
+- hosts: laptops
+  become: true
+  become_method: sudo
+  roles:
+    - laptops

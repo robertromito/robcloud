@@ -1,0 +1,15 @@
+---
+- name: "Install common packages"
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - htop
+    - tree
+    - git
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
