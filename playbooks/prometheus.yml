@@ -1,11 +1,13 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: all
+- hosts: pis
   become: true
   become_method: sudo
 
   vars:
-    prometheus_version: 2.12.0
+    prometheus_version: 2.15.1
+    prometheus_prefix_name: "prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}"
+    prometheus_download_file_name: "{{ prometheus_prefix_name }}.tar.gz"
 
   tasks:
   - name: Creating prometheus user group
@@ -23,13 +25,14 @@
 
   - name: Install prometheus
     unarchive:
-      src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}.tar.gz"
+      src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/{{ prometheus_download_file_name }}"
       dest: /tmp/
       remote_src: yes
+      creates: "/tmp/{{ prometheus_download_file_name }}"
   
   - name: Copy prometheus file to bin
     copy:
-      src: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}/prometheus"
+      src: "/tmp/{{ prometheus_prefix_name }}/prometheus"
       dest: "/usr/local/bin/prometheus"
       owner: prometheus
       group: prometheus
@@ -38,7 +41,7 @@
       
   - name: Delete prometheus tmp folder
     file:
-      path: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}"
+      path: "/tmp/{{ prometheus_prefix_name }}"
       state: absent     
       
   - name: Prometheus directories
@@ -61,7 +64,9 @@
     template:
       src: ../templates/prometheus.init.service.j2
       dest: /etc/systemd/system/prometheus.service
-    notify: systemd_reload
+
+  - name: Reload systemd
+    command: systemctl daemon-reload
 
   - name: Start prometheus service
     service:
@@ -69,19 +74,13 @@
       state: started
       enabled: yes
 
-  - name: Check if prometheus is accessible
-    uri:
-      url: http://localhost:9090/graph
-      method: GET
-      status_code: 200
-  
-  handlers:
   - name: Restart the Prometheus service
     service:
       name: prometheus
       state: restarted
-    listen: event_restart_prometheus
 
-  - name: Reload systemd
-    command: systemctl daemon-reload
-    listen: systemd_reload    
+  - name: Check if prometheus is accessible
+    uri:
+      url: http://localhost:9090/status
+      method: GET
+      status_code: 200
