@@ -15,11 +15,13 @@
         --name folding-at-home \
         -p 7396:7396 \
         -p 36330:36330 \
-        -e USER=Anonymous \
-        -e TEAM=0 \
+        -e USER=rob_cloud_node \
+        -e TEAM=259198 \
         -e ENABLE_GPU=false \
         -e ENABLE_SMP=true \
+        -e PASSKEY={{ passkey }}
         --restart unless-stopped \
         yurinnick/folding-at-home \
-        --allow 0/0 \
-        --command-allow-no-pass 10.0.0.0/24
+        --allow 10.0.0.0/24 \
+        --command-allow-no-pass 10.0.0.0/24 \
+        --power=medium
