@@ -1,0 +1,10 @@
+{
+  "name": "smokybot",
+  "version": "1.0.0",
+  "description": "Virtual Smoky the cat",
+  "main": "index.js",
+  "repository": "https://github.com/robertromito/robcloud",
+  "author": "Robert Romito",
+  "license": "MIT",
+  "private": true
+}
