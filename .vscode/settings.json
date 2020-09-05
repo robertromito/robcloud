@@ -1,0 +1,8 @@
+{
+    "filewatcher.commands": [{
+        "match": "\\bot.php",
+        "isAsync": true,
+        "cmd": "scp ${file} bb8:/volume1/web/smoky_home/bot.php",
+        "event": "onFileChange"
+    }]
+}
