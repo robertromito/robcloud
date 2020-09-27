@@ -1,29 +1,18 @@
-[all:vars]
-ansible_ssh_private_key_file=~/.ssh/robcloud
-
 localhost ansible_connection=local
 
-[macminis:vars]
+[desktops:vars]
 apt_architecture=amd64
 linux_architecture=amd64
 
-[macminis]
-robcloud0.woz
+[desktops]
+n1.robcloud
+n2.robcloud
 
 [laptops:vars]
 apt_architecture=amd64
 linux_architecture=amd64
 
 [laptops]
-robcloud1.woz
-robcloud2.woz
-robcloud3.woz
-
-[pis:vars]
-ansible_user=pi
-apt_architecture=armhf
-linux_architecture=armv7
-
-[pis]
-robcloud4.woz
-robcloud5.woz
+n3.robcloud
+n4.robcloud
+n5.robcloud
