@@ -1,15 +1,9 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: all
+- hosts: desktops,laptops
   become: true
   become_method: sudo
   roles:
     - base
     - docker
     - node_exporter
-
-- hosts: laptops
-  become: true
-  become_method: sudo
-  roles:
-    - laptops

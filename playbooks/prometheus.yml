@@ -1,6 +1,6 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: pis
+- hosts: desktops,laptops
   become: true
   become_method: sudo
 
