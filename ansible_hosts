@@ -1,16 +1,23 @@
 localhost ansible_connection=local
 
-[desktops:vars]
+[robcloud:vars]
 apt_architecture=amd64
 linux_architecture=amd64
+consul_server=false
+
+[robcloud]
+n1.robcloud
+n2.robcloud
+n3.robcloud
+n4.robcloud
+n5.robcloud
+
+[consul_servers]
+n1.robcloud consul_server=true
 
 [desktops]
 n1.robcloud
 n2.robcloud
-
-[laptops:vars]
-apt_architecture=amd64
-linux_architecture=amd64
 
 [laptops]
 n3.robcloud

@@ -1,0 +1,53 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: robcloud
+  become: true
+  become_method: sudo
+
+  vars:
+    my_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    consul_server_ips: 
+      - "{{ hostvars[groups.consul_servers[0]].ansible_default_ipv4.address }}"
+
+  tasks:
+    - name: Creating consul user group
+      group: name=consul state=present
+
+    - name: Creating consul user
+      user:
+        name: consul
+        group: consul
+        system: yes
+        shell: "/sbin/nologin"
+        comment: "consul no login User"
+        createhome: false
+        state: present
+
+    - name: consul directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+        owner: consul
+        group: consul
+      loop:
+        - /etc/consul
+        - /var/consul
+
+    - name: consul config file
+      template:
+        src: ../templates/consul.json.j2
+        dest: /etc/consul/config.json
+
+    - name: Stop existing consul container
+      shell: docker stop consul && docker rm consul
+
+    - name: Run consul container
+      shell: docker run \
+        -d \
+        --name consul \
+        --network host \
+        --restart unless-stopped \
+        -v /etc/consul:/consul/config/ \
+        -v /var/consul:/consul/data/ \
+        consul:latest
