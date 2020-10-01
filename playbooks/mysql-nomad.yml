@@ -1,0 +1,38 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: n2.robcloud, n3.robcloud
+  become: true
+  become_method: sudo
+
+  vars:
+    mysql_host_volume_path: /opt/mysql/data
+
+  tasks:
+    - name: "create data directory"
+      file:
+        path: "{{ mysql_host_volume_path }}"
+        state: directory
+        mode: 0755
+        owner: nomad
+        group: nomad
+
+    - name: host volume config file
+      template:
+        src: ../templates/mysql.nomad.volume.hcl.j2
+        dest: /etc/nomad.d/volume.mysql.hcl
+        owner: nomad
+        group: nomad
+
+    - name: "restart nomad server"
+      service:
+        name: nomad
+        state: restarted
+        enabled: yes
+
+- hosts: localhost
+
+  tasks:
+    - name: Run mysql job
+      shell: nomad run ../nomad/mysql-8.nomad
+      environment: 
+        NOMAD_ADDR: http://n1.robcloud:4646
