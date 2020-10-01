@@ -1,0 +1,36 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: robcloud
+  become: true
+  become_method: sudo
+
+  vars:
+    service_name: nomad
+
+  tasks:
+    - name: "install {{ service_name }}"
+      apt: "name={{ service_name }} state=latest"
+
+    - name: "Creating {{ service_name }} group"
+      group: "name={{ service_name }} state=present"
+
+    - name: "Creating {{ service_name }} user"
+      user:
+        name: "{{ service_name }}"
+        group: "{{ service_name }}"
+        system: yes
+        shell: "/sbin/nologin"
+        comment: "{{ service_name }} no login User"
+        createhome: false
+        state: present
+
+    - name: "{{ service_name }} directories"
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0755
+        owner: "{{ service_name }}"
+        group: "{{ service_name }}"
+      loop:
+        - "/etc/{{ service_name }}"
+        - "/var/{{ service_name }}"
