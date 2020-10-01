@@ -5,49 +5,82 @@
   become_method: sudo
 
   vars:
+    service_name: consul
     my_ip: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
     consul_server_ips: 
       - "{{ hostvars[groups.consul_servers[0]].ansible_default_ipv4.address }}"
 
   tasks:
-    - name: Creating consul user group
-      group: name=consul state=present
+    - name: "install {{ service_name }}"
+      apt: name=consul state=latest
 
-    - name: Creating consul user
+    - name: "Creating {{ service_name }} group"
+      group: "name={{ service_name }} state=present"
+
+    - name: "Creating {{ service_name }} user"
       user:
-        name: consul
-        group: consul
+        name: "{{ service_name }}"
+        group: "{{ service_name }}"
         system: yes
         shell: "/sbin/nologin"
-        comment: "consul no login User"
+        comment: "{{ service_name }} no login User"
         createhome: false
         state: present
 
-    - name: consul directories
+    - name: "{{ service_name }} directories"
       file:
         path: "{{ item }}"
         state: directory
         mode: 0755
-        owner: consul
-        group: consul
+        owner: "{{ service_name }}"
+        group: "{{ service_name }}"
       loop:
-        - /etc/consul
-        - /var/consul
+        - "/etc/{{ service_name }}.d"
+        - "/var/{{ service_name }}"
 
-    - name: consul config file
+    - name: consul agent config file
       template:
-        src: ../templates/consul.json.j2
-        dest: /etc/consul/config.json
+        src: ../templates/consul.agent.hcl.j2
+        dest: /etc/consul.d/consul.hcl
+        owner: "{{ service_name }}"
+        group: "{{ service_name }}"
 
-    - name: Stop existing consul container
-      shell: docker stop consul && docker rm consul
+    - name: consul server config file
+      template:
+        src: ../templates/consul.server.hcl.j2
+        dest: /etc/consul.d/server.hcl
+        owner: "{{ service_name }}"
+        group: "{{ service_name }}"
+      when: consul_server == "true"
 
-    - name: Run consul container
-      shell: docker run \
-        -d \
-        --name consul \
-        --network host \
-        --restart unless-stopped \
-        -v /etc/consul:/consul/config/ \
-        -v /var/consul:/consul/data/ \
-        consul:latest
+    - name: consul systemd file
+      template:
+        src: ../templates/consul.systemd.service.j2
+        dest: /usr/lib/systemd/system/consul.service
+
+    - name: "reload systemd"
+      command: systemctl daemon-reload
+    
+    - name: "start {{ service_name }} service"
+      service:
+        name: "{{ service_name }}"
+        state: started
+        enabled: yes
+
+    - name: "restart consul servers"
+      service:
+        name: "{{ service_name }}"
+        state: restarted
+      when: consul_server == "true"
+
+    - name: "restart consul clients"
+      service:
+        name: "{{ service_name }}"
+        state: restarted
+      when: consul_server != "true"
+
+    - name: "verify {{ service_name }} is running"
+      uri:
+        url: http://localhost:8500/v1/catalog/nodes
+        method: GET
+        status_code: 200
