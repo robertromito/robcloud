@@ -32,5 +32,26 @@
         owner: "{{ service_name }}"
         group: "{{ service_name }}"
       loop:
-        - "/etc/{{ service_name }}"
+        - "/etc/{{ service_name }}.d"
         - "/var/{{ service_name }}"
+
+    - name: nomad agent config file
+      template:
+        src: ../templates/nomad.agent.hcl.j2
+        dest: /etc/nomad.d/nomad.hcl
+        owner: "{{ service_name }}"
+        group: "{{ service_name }}"
+
+    - name: nomad systemd file
+      template:
+        src: ../templates/nomad.systemd.service.j2
+        dest: /usr/lib/systemd/system/nomad.service
+
+    - name: "reload systemd"
+      command: systemctl daemon-reload
+    
+    - name: "restart nomad server"
+      service:
+        name: "{{ service_name }}"
+        state: restarted
+        enabled: yes

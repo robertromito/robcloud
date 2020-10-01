@@ -4,6 +4,7 @@ localhost ansible_connection=local
 apt_architecture=amd64
 linux_architecture=amd64
 consul_server=false
+nomad_server=false
 
 [robcloud]
 n1.robcloud
@@ -12,8 +13,8 @@ n3.robcloud
 n4.robcloud
 n5.robcloud
 
-[consul_servers]
-n1.robcloud consul_server=true
+[hashicorp_servers]
+n1.robcloud consul_server=true nomad_server=true
 
 [desktops]
 n1.robcloud

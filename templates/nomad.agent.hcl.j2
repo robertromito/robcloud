@@ -1,0 +1,13 @@
+datacenter = "robcloud"
+data_dir = "/var/nomad/"
+
+client {
+    enabled = true
+}
+
+{% if nomad_server == "true" %}
+server {
+    enabled = true
+    bootstrap_expect = 1
+}
+{% endif %}
