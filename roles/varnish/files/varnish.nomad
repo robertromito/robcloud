@@ -47,7 +47,7 @@ EOF
       }
 
       service {
-        name = "varnish-server"
+        name = "varnish"
         port = "http"
 
         check {
