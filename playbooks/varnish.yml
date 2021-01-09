@@ -1,7 +1,28 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: localhost
-  become: false
-  gather_facts: false
-  roles:
-    - varnish
+- hosts: n1.robcloud
+
+  become: true
+  become_method: sudo
+
+  vars:
+    my_name: varnish
+
+  tasks:
+  - import_tasks: ../tasks/robcloud_service_user.yml
+    vars:
+      robcloud_service_name: "{{ my_name }}"
+
+  - name: "{{ my_name }} config file - {{ item }}"
+    copy:
+      src: "files/varnish/{{ item }}"
+      dest: "/opt/varnish/{{ item }}"
+      owner: "{{ my_name }}"
+      group: "{{ my_name }}"
+      mode: '0644'
+    loop:
+    - default.vcl
+    - docker-compose.yml
+
+  - name: "starting {{ my_name }} docker container"
+    command: docker-compose -f /opt/varnish/docker-compose.yml up -d 

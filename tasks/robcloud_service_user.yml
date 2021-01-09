@@ -1,0 +1,23 @@
+- name: "Creating {{ robcloud_service_name }} user group"
+  group: 
+    name: "{{ robcloud_service_name }}" 
+    state: present
+
+- name: "Creating {{ robcloud_service_name }} user"
+  user:
+    name: "{{ robcloud_service_name }}"
+    group: "{{ robcloud_service_name }}" 
+    system: yes
+    shell: "/sbin/nologin"
+    comment: "{{ robcloud_service_name }} nologin User"
+    createhome: false
+    state: present
+
+- name: "Creating {{ robcloud_service_name }} directory"
+  file:
+    path: "/opt/{{ robcloud_service_name }}"
+    state: directory
+    mode: 0755
+    owner: "{{ robcloud_service_name }}"
+    group: "{{ robcloud_service_name }}"
+
