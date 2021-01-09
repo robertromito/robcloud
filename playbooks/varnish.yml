@@ -1,0 +1,7 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - varnish
