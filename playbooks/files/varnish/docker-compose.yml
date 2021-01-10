@@ -3,6 +3,6 @@ services:
   varnish:
     image: varnish:stable
     ports:
-      - 8080:80
+      - 80:80
     volumes:
       - /opt/varnish/default.vcl:/etc/varnish/default.vcl:ro
