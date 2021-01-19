@@ -14,7 +14,7 @@
         --name folding-at-home \
         -p 7396:7396 \
         -p 36330:36330 \
-        -e USER=rob_cloud_node \
+        -e USER={{ inventory_hostname }} \
         -e TEAM=259198 \
         -e ENABLE_GPU=false \
         -e ENABLE_SMP=true \
