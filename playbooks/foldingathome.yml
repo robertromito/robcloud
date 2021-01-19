@@ -1,13 +1,12 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: all:!pis
+- hosts: robcloud
+  become: true
+  become_method: sudo
 
   tasks:
     - name: "Stop existing FAH containers"
-      shell: docker stop folding-at-home
-
-    - name: "Remove existing FAH containers"
-      shell: docker rm folding-at-home
+      shell: docker stop folding-at-home || true && docker rm folding-at-home || true
 
     - name: "Run FAH docker image"
       shell: docker run \
@@ -22,6 +21,7 @@
         -e PASSKEY={{ passkey }}
         --restart unless-stopped \
         yurinnick/folding-at-home \
-        --allow 10.0.0.0/24 \
-        --command-allow-no-pass 10.0.0.0/24 \
+        --allow 10.0.0.0/16 \
+        --web-allow 10.0.0.0/16 \
+        --command-allow-no-pass 10.0.0.0/16 \
         --power=medium
