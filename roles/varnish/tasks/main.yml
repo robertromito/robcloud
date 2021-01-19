@@ -1,5 +1,0 @@
----
-- name: "Run varnish nomad job"
-  shell: "nomad run {{ role_path }}/files/varnish.nomad"
-  environment:
-    NOMAD_ADDR: http://nomad.robcloud
