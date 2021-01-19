@@ -12,6 +12,7 @@ n2.robcloud
 n3.robcloud
 n4.robcloud
 n5.robcloud
+n6.robcloud
 
 [hashicorp_servers]
 n1.robcloud consul_server=true nomad_server=true
@@ -24,3 +25,4 @@ n2.robcloud
 n3.robcloud
 n4.robcloud
 n5.robcloud
+n6.robcloud

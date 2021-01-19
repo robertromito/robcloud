@@ -4,6 +4,8 @@
   become: true
   become_method: sudo
   roles:
-    - base
-    - docker
-    - node_exporter
+    - role: base
+    - role: laptops
+      when: "'laptops' in group_names"
+    - role: docker
+    - role: node_exporter
