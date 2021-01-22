@@ -1,0 +1,11 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: r2d2.home
+  gather_facts: false
+
+  tasks:
+  - name: "Upload home.robcloud webpage"
+    template:
+      src: ../systems/home.robcloud/index.html
+      dest: /volume1/web/home.robcloud
+      mode: 0644

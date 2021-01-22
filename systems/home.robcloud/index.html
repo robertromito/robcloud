@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="html">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>I am Robcloud!</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="index.html">
+          <p>
+            <span class="icon is-large"
+              ><i class="fas fa-2x fa-cloud"></i
+            ></span>
+            Robcloud
+          </p>
+        </a>
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container has-text-centered">
+        <p class="title">Folding @ Home</p>
+        <div class="tabs is-centered" id="tab-list">
+          <ul>
+            <li class="is-active" data-target="n1" id="1"><a>n1</a></li>
+            <li data-target="n2" id="2"><a>n2</a></li>
+            <li data-target="n3" id="3"><a>n3</a></li>
+            <li data-target="n4" id="4"><a>n4</a></li>
+            <li data-target="n5" id="5"><a>n5</a></li>
+            <li data-target="n6" id="6"><a>n6</a></li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane" id="n1">
+            <figure class="image">
+              <iframe
+                title="FAH - n1.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n1.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+          <div class="tab-pane is-hidden" id="n2">
+            <figure class="image">
+              <iframe
+                title="FAH - n2.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n2.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+          <div class="tab-pane is-hidden" id="n3">
+            <figure class="image">
+              <iframe
+                title="FAH - n3.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n3.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+          <div class="tab-pane is-hidden" id="n4">
+            <figure class="image">
+              <iframe
+                title="FAH - n4.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n4.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+          <div class="tab-pane is-hidden" id="n5">
+            <figure class="image">
+              <iframe
+                title="FAH - n5.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n5.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+          <div class="tab-pane is-hidden" id="n6">
+            <figure class="image">
+              <iframe
+                title="FAH - n6.robcloud"
+                class="has-ratio"
+                width="1000"
+                height="700"
+                src="http://n6.robcloud:7396"
+              ></iframe>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.querySelectorAll("#tab-list li").forEach(function (navEl) {
+        navEl.onclick = function () {
+          toggleTab(this.id, this.dataset.target);
+        };
+      });
+
+      function toggleTab(selectedNav, targetId) {
+        var navEls = document.querySelectorAll("#tab-list li");
+
+        navEls.forEach(function (navEl) {
+          if (navEl.id == selectedNav) {
+            navEl.classList.add("is-active");
+          } else {
+            if (navEl.classList.contains("is-active")) {
+              navEl.classList.remove("is-active");
+            }
+          }
+        });
+
+        var tabs = document.querySelectorAll(".tab-pane");
+
+        tabs.forEach(function (tab) {
+          if (tab.id == targetId) {
+            tab.classList.remove("is-hidden");
+          } else {
+            tab.classList.add("is-hidden");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
