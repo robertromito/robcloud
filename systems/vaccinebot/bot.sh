@@ -5,7 +5,7 @@ nac_token='%22hfaPmNSR9Hlq0THisjmmsOfU66FxCus3NDcgKt7K6oGp60PK1moq5jnNRg1NRimL%2
 while true; do
 
     results=$(http https://am-i-eligible.covid19vaccine.health.ny.gov/api/list-providers | jq '.providerList[] | select(.address == "Buffalo, NY")')
-    echo $results
+    echo "$(date) - ${results}"
     
     if $(echo $results | grep "AA"); then
         msg="$(date) There are appointments available"
@@ -20,5 +20,5 @@ while true; do
         -f POST "https://chat.home/webapi/entry.cgi?api=SYNO.Chat.External&method=incoming&version=2&token=${token}" \
         payload="{\"text\": \"${msg}\"}"
 
-    sleep 15
+    sleep 30
 done
