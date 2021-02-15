@@ -20,5 +20,6 @@
   - name: "Bot cron job"
     cron:
       name: "vaccine bot"
-      job: "/home/rob/vaccinebot.sh"
+      job: "/home/rob/vaccinebot.sh >> /home/rob/vaccinebot.log 2>&1"
       state: present
+      user: rob
