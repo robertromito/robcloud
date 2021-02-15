@@ -8,10 +8,10 @@ while true; do
     echo $results
     
     if $(echo $results | grep "AA"); then
-        msg="There are appointments available"
+        msg="$(date) There are appointments available"
         token=$aa_token
     else
-        msg="There are no appoinments available"
+        msg="$(date) There are no appoinments available"
         token=$nac_token
     fi
 
