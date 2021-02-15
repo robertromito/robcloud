@@ -17,3 +17,5 @@ fi
 http --ignore-stdin --verify=no -f POST \
     "https://chat.home/webapi/entry.cgi?api=SYNO.Chat.External&method=incoming&version=2&token=${token}" \
     payload="{\"text\": \"${msg}\"}"
+
+echo "-----"
