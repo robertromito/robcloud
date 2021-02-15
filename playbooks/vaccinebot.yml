@@ -1,0 +1,25 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: n5.robcloud
+
+  tasks:
+  - name: "Install dependencies"
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - jq
+
+  - name: "Copying bot"
+    copy:
+      src: "files/vaccinebot/bot.sh"
+      dest: "~/vaccinebot.sh"
+      mode: '0755'
+
+  - name: "Bot cron job"
+    cron:
+      name: "vaccine bot"
+      job: "/home/rob/vaccinebot.sh >> /home/rob/vaccinebot.log 2>&1"
+      state: present
+      user: rob
