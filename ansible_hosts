@@ -15,7 +15,9 @@ n5.robcloud
 n6.robcloud
 
 [hashicorp_servers]
-n1.robcloud consul_server=true nomad_server=true
+n3.robcloud consul_server=true nomad_server=true
+n4.robcloud consul_server=true nomad_server=true
+n5.robcloud consul_server=true nomad_server=true
 
 [desktops]
 n1.robcloud
