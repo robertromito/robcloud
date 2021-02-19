@@ -53,5 +53,5 @@
     - name: "restart nomad server"
       service:
         name: "{{ service_name }}"
-        state: restarted
-        enabled: yes
+        state: stopped
+        enabled: no
