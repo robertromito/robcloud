@@ -1,4 +1,4 @@
-localhost ansible_connection=local
+localhost ansible_connection=local consul_server=false
 
 [robcloud:vars]
 apt_architecture=amd64

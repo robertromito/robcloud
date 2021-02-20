@@ -1,25 +1,41 @@
 #!/usr/bin/env ansible-playbook
 ---
 - hosts: n5.robcloud
+  become: true
+  become_method: sudo
 
   tasks:
-  - name: "Install dependencies"
-    become: yes
-    apt:
-      name: "{{ item }}"
-      state: present
-    loop:
-      - jq
+  - name: "Bot directory"
+    file:
+      path: "/opt/vaccinebot"
+      state: directory
+      mode: 0755
+      owner: rob
+      group: rob
 
   - name: "Copying bot"
     copy:
-      src: "files/vaccinebot/bot.sh"
-      dest: "~/vaccinebot.sh"
+      src: "../systems/vaccinebot/bot.sh"
+      dest: "/opt/vaccinebot/bot.sh"
       mode: '0755'
 
-  - name: "Bot cron job"
-    cron:
-      name: "vaccine bot"
-      job: "/home/rob/vaccinebot.sh >> /home/rob/vaccinebot.log 2>&1"
-      state: present
-      user: rob
+  - name: "Copying Dockerfile"
+    copy:
+      src: "../systems/vaccinebot/Dockerfile"
+      dest: "/opt/vaccinebot/Dockerfile"
+
+  - name: "Build image"
+    shell: 
+      cmd: docker build -t vaccinebot .
+      chdir: "/opt/vaccinebot"  
+
+  - name: "Stop existing bot"
+    shell: docker stop vaccinebot || true && docker rm vaccinebot || true 
+
+  - name: "Run bot"
+    shell: docker run \
+        -d \
+        --name vaccinebot \
+        --restart unless-stopped \
+        --network host \
+        vaccinebot
