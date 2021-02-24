@@ -29,7 +29,8 @@ notifyChat() {
 }
 
 notifySms() {
-    http -a ${twilio_account_id}:${twilio_account_token} \
+    http --ignore-stdin 
+        -a ${twilio_account_id}:${twilio_account_token} \
         -f POST \
         https://api.twilio.com/2010-04-01/Accounts/${twilio_account_id}/Messages.json \
         From=+${twilio_from_number} \
@@ -42,7 +43,7 @@ while true; do
     sleep_time=20
     echo "--- $(date) ---"
 
-    results=$(http GET https://am-i-eligible.covid19vaccine.health.ny.gov/api/list-providers | jq '.providerList[] | select(.address == "Buffalo, NY")')
+    results=$(http GET https://am-i-eligible.covid19vaccine.health.ny.gov/api/list-providers | jq '.providerList[] | select(.providerName | startswith("University at Buffalo"))')
     echo "${results}"
 
     if $(echo $results | grep -q "AA"); then
