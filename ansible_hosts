@@ -10,14 +10,11 @@ nomad_server=false
 n1.robcloud
 n2.robcloud
 n3.robcloud
-n4.robcloud
-n5.robcloud
-n6.robcloud
 
 [hashicorp_servers]
+n1.robcloud consul_server=true nomad_server=true
+n2.robcloud consul_server=true nomad_server=true
 n3.robcloud consul_server=true nomad_server=true
-n4.robcloud consul_server=true nomad_server=true
-n5.robcloud consul_server=true nomad_server=true
 
 [desktops]
 n1.robcloud
@@ -25,9 +22,6 @@ n2.robcloud
 
 [laptops]
 n3.robcloud
-n4.robcloud
-n5.robcloud
-n6.robcloud
 
 [synology]
 r2d2.home
