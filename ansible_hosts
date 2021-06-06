@@ -12,13 +12,12 @@ localhost
 ansible_python_interpreter=/usr/bin/python3
 apt_architecture=amd64
 linux_architecture=amd64
-consul_server=false
-nomad_server=false
+consul_server=true
 
 [robcloud]
-k-2so.robcloud consul_server=true 
-c1-10p.robcloud consul_server=true 
-l3-37.robcloud consul_server=true 
+k-2so.robcloud 
+c1-10p.robcloud
+l3-37.robcloud 
 
 [laptops]
 c1-10p.robcloud
