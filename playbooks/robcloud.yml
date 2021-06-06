@@ -1,11 +1,14 @@
 #!/usr/bin/env ansible-playbook
 ---
-- hosts: desktops,laptops
+- hosts: robcloud
   become: true
   become_method: sudo
+
   roles:
     - role: base
     - role: laptops
       when: "'laptops' in group_names"
     - role: docker
+    - role: consul
+    - role: prometheus
     - role: node_exporter

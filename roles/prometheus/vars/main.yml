@@ -1,0 +1,4 @@
+---
+prometheus_version: 2.15.1
+prometheus_prefix_name: "prometheus-{{ prometheus_version }}.linux-{{ linux_architecture }}"
+prometheus_download_file_name: "{{ prometheus_prefix_name }}.tar.gz"
