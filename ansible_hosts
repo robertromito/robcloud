@@ -15,12 +15,12 @@ linux_architecture=amd64
 consul_server=true
 
 [robcloud]
-k-2so.robcloud 
-c1-10p.robcloud
-l3-37.robcloud 
+k2so.robcloud 
+c110p.robcloud
+l337.robcloud 
 
 [laptops]
-c1-10p.robcloud
+c110p.robcloud
 
 [synology:vars]
 ansible_python_interpreter=/usr/bin/python
