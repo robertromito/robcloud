@@ -23,3 +23,4 @@
     - gnupg-agent
     - software-properties-common
     - httpie
+    - neofetch
