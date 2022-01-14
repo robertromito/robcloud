@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: pi1.local
+  gather_facts: false
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: "Make app directory"
+    file:
+      path: "/opt/airquality"
+      state: directory
+      mode: 0755
+      owner: pi
+      group: pi
+
+  - name: "Copying script"
+    copy:
+      src: "../systems/airquality/read_sns011.py"
+      dest: "/opt/airquality/read_sns011.py"
+      mode: '0755'
+

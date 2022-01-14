@@ -1,0 +1,12 @@
+#!/usr/bin/env ansible-playbook
+---
+- hosts: pis
+  become: true
+  become_method: sudo
+
+  vars:
+    - node_exporter: false
+    
+  roles:
+    - role: base
+    - role: prometheus

@@ -6,8 +6,10 @@ scrape_configs:
     static_configs:
       - targets: ['{{ ansible_host }}:9090']
 
+{% if node_exporter %}
   - job_name: 'node_exporter'
     static_configs:
-    {% for host in groups['all'] %}
+    {% for host in groups['robcloud'] %}
       - targets: ['{{ host }}:9100']
     {% endfor %}
+{% endif %}

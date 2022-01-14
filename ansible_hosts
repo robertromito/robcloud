@@ -29,3 +29,10 @@ ansible_python_interpreter=/usr/bin/python
 [synology]
 r2d2.robcloud
 bb8.robcloud
+
+[pis:vars]
+apt_architecture=armhf
+linux_architecture=armv7
+
+[pis]
+pi1.home
